@@ -498,7 +498,7 @@
 
   <div class="hero-cta">
     <div class="glow-border"><a href="#projects" class="btn btn-primary">View Projects →</a></div>
-    <a href="Aakarshan_Sharma_CV(A).pdf" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">Download Résumé</a>
+    <a href="Aakarshan_Sharma_AIML_Resume.pdf" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">Download Résumé</a>
     <a href="mailto:aakarshansharma46@gmail.com" class="btn btn-ghost">Contact Me</a>
   </div>
 
@@ -530,6 +530,9 @@
         <li><b>Engineered a live, pandas-based spreadsheet analytics engine</b> converting natural-language questions into validated query specifications executed directly against real data, including automatic reshaping of pivoted MIS-style reports.</li>
         <li><b>Cut end-to-end inference latency 10–20×</b> (20–30 min → 60–180 sec) by migrating LLM serving to a dedicated GPU-capable server, and shipped 4 access surfaces (terminal, web UI, REST API, desktop launcher) with department-level access control.</li>
       </ul>
+      <div class="project-links" style="margin-top:22px;">
+        <a href="https://github.com/AKKI0003/GPI-Assistant" class="proj-link" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      </div>
     </div>
   </div>
 </section>
@@ -588,7 +591,7 @@
     <div class="section-head fade-in">
       <div class="eyebrow">Projects</div>
       <h2 class="section-title">Things I've shipped.</h2>
-      <p class="section-sub">From a self-hosted RAG assistant to AI-driven stealth guards.</p>
+      <p class="section-sub">From a real-time crew tracker to AI-driven stealth guards.</p>
     </div>
 
     <div class="projects-grid">
@@ -598,30 +601,43 @@
         <div class="pf-inner">
           <div>
             <span class="status-pill st-featured"><span class="dot"></span>Featured Build</span>
-            <div class="project-title">Operation Rust</div>
-            <div class="project-role">Developer — 2D Top-Down Stealth Game</div>
+            <div class="project-title">SpideyTracker</div>
+            <div class="project-role">Developer — Real-Time Crew Location Tracker</div>
             <p class="project-desc">
-              Built a 2D top-down stealth game with intelligent AI-controlled guards, implementing
-              finite-state-machine (FSM) behavior, a custom A* pathfinding system, and vision-cone /
-              line-of-sight detection for dynamic patrol and chase mechanics. Full mission-based gameplay
-              loop — disable radar dish → infiltrate VIP building → retrieve intelligence → escape via
-              helipad — with menu, game-over/victory states, and integrated audio and UI.
+              A private, real-time location-sharing app for friend groups with a Spider-Man pixel-art
+              aesthetic. Create or join a party of up to 8, share a live pulsing location marker on the
+              map, drop photo pins with captions and up to 5 photos, and revisit everything in a
+              date-grouped journal. Group chat is end-to-end encrypted — messages live only on-device
+              once delivered. Pick your own live-location mask and memory-pin spider + color to make it
+              yours. Built end-to-end from architecture through UI polish, backed by Firebase for
+              real-time sync across an actively-evolving codebase.
             </p>
             <div class="project-tags">
-              <span class="ptag">Unity</span><span class="ptag">C#</span><span class="ptag">A* Pathfinding</span>
-              <span class="ptag">FSM AI</span><span class="ptag">Vision Cone</span>
+              <span class="ptag">Flutter</span><span class="ptag">Firebase</span><span class="ptag">Realtime Sync</span>
+              <span class="ptag">E2E Encrypted Chat</span><span class="ptag">Geolocation</span>
             </div>
             <div class="project-links">
-              <a href="https://github.com/AKKI0003/OperaationRust" class="proj-link" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-              <a href="https://akki109.itch.io/operationrust" class="proj-link" target="_blank" rel="noopener noreferrer">Play on itch.io ↗</a>
+              <a href="https://github.com/AKKI0003/SpideyTracker" class="proj-link" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
             </div>
           </div>
           <div class="feat-visual">
-            <div><span class="k">mission:</span> <span class="v">radar → vip → intel → escape</span></div>
-            <div><span class="k">ai_state:</span> <span class="v">patrol → suspicious → chase</span></div>
-            <div><span class="k">pathfind:</span> <span class="v">A* (grid-based)</span></div>
-            <div><span class="k">status:</span> <span class="v">playable build live</span></div>
+            <div><span class="k">party_size:</span> <span class="v">up to 8 members</span></div>
+            <div><span class="k">live_marker:</span> <span class="v">pulsing, opt-in per session</span></div>
+            <div><span class="k">chat:</span> <span class="v">end-to-end encrypted</span></div>
+            <div><span class="k">status:</span> <span class="v">actively developed</span></div>
           </div>
+        </div>
+      </div>
+
+      <div class="project-card fade-in">
+        <span class="status-pill st-live"><span class="dot"></span>Live</span>
+        <div class="project-title">Operation Rust</div>
+        <div class="project-role">Developer — 2D Top-Down Stealth Game</div>
+        <p class="project-desc">Built a 2D top-down stealth game with intelligent AI-controlled guards, implementing finite-state-machine (FSM) behavior, a custom A* pathfinding system, and vision-cone/line-of-sight detection for dynamic patrol and chase mechanics. Full mission-based gameplay loop — disable radar dish → infiltrate VIP building → retrieve intelligence → escape via helipad.</p>
+        <div class="project-tags"><span class="ptag">Unity</span><span class="ptag">C#</span><span class="ptag">A* Pathfinding</span><span class="ptag">FSM AI</span></div>
+        <div class="project-links">
+          <a href="https://github.com/AKKI0003/OperaationRust" class="proj-link" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+          <a href="https://akki109.itch.io/operationrust" class="proj-link" target="_blank" rel="noopener noreferrer">Play ↗</a>
         </div>
       </div>
 
