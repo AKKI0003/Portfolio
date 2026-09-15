@@ -52,27 +52,18 @@
     *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
   }
 
-  /* ================= BACKGROUND AURORA ================= */
-  .aurora {
-    position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  /* ================= WEBGL FIBER BACKGROUND ================= */
+  #fiberBg {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    width: 100%; height: 100%; display: block; background: var(--bg);
   }
-  .aurora span {
-    position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.35;
-    animation: drift 22s ease-in-out infinite;
-  }
-  .aurora .a1 { width: 520px; height: 520px; background: var(--violet); top: -160px; left: -120px; }
-  .aurora .a2 { width: 480px; height: 480px; background: var(--cyan); top: 20%; right: -160px; animation-delay: -6s; }
-  .aurora .a3 { width: 420px; height: 420px; background: var(--pink); bottom: -140px; left: 30%; animation-delay: -12s; }
-  @keyframes drift {
-    0%, 100% { transform: translate(0,0) scale(1); }
-    50% { transform: translate(40px,-30px) scale(1.12); }
-  }
+  #fiberBg canvas { width: 100%; height: 100%; display: block; }
 
   .noise-grid {
     position: fixed; inset: 0; z-index: 0; pointer-events: none;
     background-image:
-      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
     background-size: 48px 48px;
     mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, black 20%, transparent 75%);
   }
@@ -276,7 +267,7 @@
   .xp-list li::before { content: '▸'; color: var(--violet); position: absolute; left: 0; top: 1px; }
   .xp-list li b { color: var(--text); font-weight: 600; }
 
-  /* ================= SKILLS ================= */
+  /* ================= SKILLS (pill style — presence only, no proficiency) ================= */
   .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; }
   .skill-card {
     border: 1px solid var(--border); border-radius: 16px; padding: 26px;
@@ -288,11 +279,20 @@
     color: var(--text); margin-bottom: 18px; display: flex; align-items: center; gap: 9px;
   }
   .skill-cat-title .sw { width: 8px; height: 8px; border-radius: 2px; }
-  .skill-item { margin-bottom: 13px; }
-  .skill-item:last-child { margin-bottom: 0; }
-  .skill-name { font-size: 12.5px; color: var(--dim); margin-bottom: 6px; display: flex; justify-content: space-between; }
-  .skill-bar { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.06); overflow: hidden; }
-  .skill-fill { height: 100%; border-radius: 3px; width: 0%; background: var(--grad-1); transition: width 1.1s cubic-bezier(0.4,0,0.2,1); }
+  .skill-pills { display: flex; flex-wrap: wrap; gap: 9px; }
+  .skill-pill {
+    font-family: var(--font-mono); font-size: 12px; padding: 8px 14px;
+    border-radius: 999px; border: 1px solid var(--border-strong);
+    background: rgba(255,255,255,0.03); color: var(--text);
+    display: inline-flex; align-items: center; gap: 7px;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  }
+  .skill-pill:hover { transform: translateY(-2px); }
+  .skill-pill .dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+  .skill-card:nth-child(1) .skill-pill:hover { border-color: rgba(139,92,246,0.5); background: rgba(139,92,246,0.08); }
+  .skill-card:nth-child(2) .skill-pill:hover { border-color: rgba(34,211,238,0.5); background: rgba(34,211,238,0.08); }
+  .skill-card:nth-child(3) .skill-pill:hover { border-color: rgba(244,114,182,0.5); background: rgba(244,114,182,0.08); }
+  .skill-card:nth-child(4) .skill-pill:hover { border-color: rgba(251,191,36,0.5); background: rgba(251,191,36,0.08); }
 
   /* ================= PROJECTS ================= */
   .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 22px; }
@@ -442,7 +442,7 @@
 </head>
 <body>
 
-<div class="aurora"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+<div id="fiberBg"></div>
 <div class="noise-grid"></div>
 
 <!-- BOOT SCREEN -->
@@ -493,7 +493,7 @@
     <div class="stat-box"><span class="stat-number" data-target="8.94">0</span><span class="stat-label">CGPA / 10.0</span></div>
     <div class="stat-box"><span class="stat-number" data-target="8" data-suffix="+">0</span><span class="stat-label">Projects Shipped</span></div>
     <div class="stat-box"><span class="stat-number" data-target="20" data-prefix="10–" data-suffix="×">0</span><span class="stat-label">Latency Cut (Intern)</span></div>
-    <div class="stat-box"><span class="stat-number" data-target="3">0</span><span class="stat-label">Certifications</span></div>
+    <div class="stat-box"><span class="stat-number" data-target="3">0</span><span class="stat-label">Certificates</span></div>
   </div>
 
   <div class="hero-cta">
@@ -549,37 +549,46 @@
     <div class="skills-grid">
       <div class="skill-card fade-in">
         <div class="skill-cat-title"><span class="sw" style="background:var(--violet)"></span>AI &amp; ML</div>
-        <div class="skill-item"><div class="skill-name"><span>Retrieval-Augmented Generation</span></div><div class="skill-bar"><div class="skill-fill" data-width="94"></div></div></div>
-        <div class="skill-item"><div class="skill-name"><span>Local LLM Deployment (Ollama)</span></div><div class="skill-bar"><div class="skill-fill" data-width="90"></div></div></div>
-        <div class="skill-item"><div class="skill-name"><span>ComfyUI Diffusion Pipelines</span></div><div class="skill-bar"><div class="skill-fill" data-width="80"></div></div></div>
-        <div class="skill-item"><div class="skill-name"><span>Qwen &amp; Open-Source LLMs</span></div><div class="skill-bar"><div class="skill-fill" data-width="82"></div></div></div>
-        <div class="skill-item"><div class="skill-name"><span>Local TTS (Qwen-TTS) &amp; EchoMimic v2</span></div><div class="skill-bar"><div class="skill-fill" data-width="78"></div></div></div>
-        <div class="skill-item"><div class="skill-name"><span>Zero-Shot Classification · Prompt Engineering</span></div><div class="skill-bar"><div class="skill-fill" data-width="86"></div></div></div>
+        <div class="skill-pills">
+          <span class="skill-pill"><span class="dot" style="background:var(--violet)"></span>Retrieval-Augmented Generation</span>
+          <span class="skill-pill"><span class="dot" style="background:var(--violet)"></span>Local LLM Deployment (Ollama)</span>
+          <span class="skill-pill"><span class="dot" style="background:var(--violet)"></span>ComfyUI Diffusion Pipelines</span>
+          <span class="skill-pill"><span class="dot" style="background:var(--violet)"></span>Qwen &amp; Open-Source LLMs</span>
+          <span class="skill-pill"><span class="dot" style="background:var(--violet)"></span>Local TTS (Qwen-TTS) &amp; EchoMimic v2</span>
+          <span class="skill-pill"><span class="dot" style="background:var(--violet)"></span>Zero-Shot Classification</span>
+          <span class="skill-pill"><span class="dot" style="background:var(--violet)"></span>Prompt Engineering</span>
+        </div>
       </div>
 
       <div class="skill-card fade-in">
         <div class="skill-cat-title"><span class="sw" style="background:var(--cyan)"></span>Data &amp; Analytics</div>
-        <div class="skill-item"><div class="skill-name"><span>Pandas / NumPy</span></div><div class="skill-bar"><div class="skill-fill" data-width="93"></div></div></div>
-        <div class="skill-item"><div class="skill-name"><span>EDA / ETL Pipelines</span></div><div class="skill-bar"><div class="skill-fill" data-width="90"></div></div></div>
-        <div class="skill-item"><div class="skill-name"><span>Power BI / Tableau</span></div><div class="skill-bar"><div class="skill-fill" data-width="85"></div></div></div>
-        <div class="skill-item"><div class="skill-name"><span>Scikit-Learn</span></div><div class="skill-bar"><div class="skill-fill" data-width="80"></div></div></div>
-        <div class="skill-item"><div class="skill-name"><span>SQL / SQLite / PostgreSQL</span></div><div class="skill-bar"><div class="skill-fill" data-width="86"></div></div></div>
+        <div class="skill-pills">
+          <span class="skill-pill"><span class="dot" style="background:var(--cyan)"></span>Pandas / NumPy</span>
+          <span class="skill-pill"><span class="dot" style="background:var(--cyan)"></span>EDA / ETL Pipelines</span>
+          <span class="skill-pill"><span class="dot" style="background:var(--cyan)"></span>Power BI / Tableau</span>
+          <span class="skill-pill"><span class="dot" style="background:var(--cyan)"></span>Scikit-Learn</span>
+          <span class="skill-pill"><span class="dot" style="background:var(--cyan)"></span>SQL / SQLite / PostgreSQL</span>
+        </div>
       </div>
 
       <div class="skill-card fade-in">
         <div class="skill-cat-title"><span class="sw" style="background:var(--pink)"></span>Game Development</div>
-        <div class="skill-item"><div class="skill-name"><span>Unity 2D/3D · C#</span></div><div class="skill-bar"><div class="skill-fill" data-width="88"></div></div></div>
-        <div class="skill-item"><div class="skill-name"><span>Roblox Studio · LuaU</span></div><div class="skill-bar"><div class="skill-fill" data-width="85"></div></div></div>
-        <div class="skill-item"><div class="skill-name"><span>Game AI: FSM &amp; A* Pathfinding</span></div><div class="skill-bar"><div class="skill-fill" data-width="84"></div></div></div>
-        <div class="skill-item"><div class="skill-name"><span>UI/UX &amp; Gameplay Systems</span></div><div class="skill-bar"><div class="skill-fill" data-width="80"></div></div></div>
+        <div class="skill-pills">
+          <span class="skill-pill"><span class="dot" style="background:var(--pink)"></span>Unity 2D/3D · C#</span>
+          <span class="skill-pill"><span class="dot" style="background:var(--pink)"></span>Roblox Studio · LuaU</span>
+          <span class="skill-pill"><span class="dot" style="background:var(--pink)"></span>Game AI: FSM &amp; A* Pathfinding</span>
+          <span class="skill-pill"><span class="dot" style="background:var(--pink)"></span>UI/UX &amp; Gameplay Systems</span>
+        </div>
       </div>
 
       <div class="skill-card fade-in">
         <div class="skill-cat-title"><span class="sw" style="background:var(--amber)"></span>Languages &amp; Frameworks</div>
-        <div class="skill-item"><div class="skill-name"><span>Python · SQL · JavaScript</span></div><div class="skill-bar"><div class="skill-fill" data-width="90"></div></div></div>
-        <div class="skill-item"><div class="skill-name"><span>Flask / FastAPI · REST APIs</span></div><div class="skill-bar"><div class="skill-fill" data-width="83"></div></div></div>
-        <div class="skill-item"><div class="skill-name"><span>Firebase · React · PostgreSQL</span></div><div class="skill-bar"><div class="skill-fill" data-width="78"></div></div></div>
-        <div class="skill-item"><div class="skill-name"><span>Java · C · C#</span></div><div class="skill-bar"><div class="skill-fill" data-width="72"></div></div></div>
+        <div class="skill-pills">
+          <span class="skill-pill"><span class="dot" style="background:var(--amber)"></span>Python · SQL · JavaScript</span>
+          <span class="skill-pill"><span class="dot" style="background:var(--amber)"></span>Flask / FastAPI · REST APIs</span>
+          <span class="skill-pill"><span class="dot" style="background:var(--amber)"></span>Firebase · React · PostgreSQL</span>
+          <span class="skill-pill"><span class="dot" style="background:var(--amber)"></span>Java · C · C#</span>
+        </div>
       </div>
     </div>
   </div>
@@ -737,7 +746,7 @@
       </div>
 
       <div class="fade-in">
-        <div class="eyebrow">Certifications</div>
+        <div class="eyebrow">Certificates</div>
         <div class="cert-grid">
           <div class="cert-card">
             <div class="cert-icon">🎮</div>
@@ -847,15 +856,10 @@ window.addEventListener('scroll', () => {
   navEl.classList.toggle('scrolled', window.scrollY > 40);
 }, { passive: true });
 
-// ===== SCROLL REVEAL + SKILL BARS + COUNTERS =====
+// ===== SCROLL REVEAL + COUNTERS =====
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      entry.target.querySelectorAll('.skill-fill').forEach((bar, idx) => {
-        setTimeout(() => { bar.style.width = bar.dataset.width + '%'; }, idx * 70);
-      });
-    }
+    if (entry.isIntersecting) entry.target.classList.add('visible');
   });
 }, { threshold: 0.15 });
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
@@ -875,6 +879,217 @@ function animateCounter(el) {
   }, 16);
 }
 setTimeout(() => { document.querySelectorAll('.stat-number[data-target]').forEach(animateCounter); }, 1400);
+
+// ===== VANILLA WEBGL2 "GHOST FIBERS" BACKGROUND =====
+// Ported from a React/ogl component to plain WebGL2 for this static site.
+// Same shader math; colors tuned to this site's violet/cyan palette so it
+// reads like the reference screenshot instead of the old 3-blob aurora.
+(function () {
+  const mount = document.getElementById('fiberBg');
+  if (!mount) return;
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const canvas = document.createElement('canvas');
+  mount.appendChild(canvas);
+  const gl = canvas.getContext('webgl2', { alpha: false, antialias: false });
+  if (!gl) { mount.remove(); return; } // graceful fallback: plain --bg color shows through
+
+  const vertexSrc = `#version 300 es
+  in vec2 position;
+  void main() { gl_Position = vec4(position, 0.0, 1.0); }
+  `;
+
+  const fragmentSrc = `#version 300 es
+  precision highp float;
+  uniform vec2 uResolution;
+  uniform float uTime;
+  uniform float uSpeed;
+  uniform float uScale;
+  uniform float uRotation;
+  uniform float uLayers;
+  uniform float uWaveAmplitude;
+  uniform float uWaveFrequency;
+  uniform float uWaveSpeed;
+  uniform float uLayerSpeed;
+  uniform float uTwist;
+  uniform float uTwistFrequency;
+  uniform float uTwistSpeed;
+  uniform float uLineFrequency;
+  uniform float uLineSpacing;
+  uniform float uLineSharpness;
+  uniform float uGlowFalloff;
+  uniform float uGlowIntensity;
+  uniform float uBrightness;
+  uniform float uBlueBoost;
+  uniform float uVignette;
+  uniform float uGrain;
+  uniform float uRotationSpeed;
+  uniform vec3 uLineColor;
+  uniform vec3 uGlowColor;
+  out vec4 fragColor;
+  #define MAX_LAYERS 10
+
+  mat2 rotate2d(float angle) {
+    float s = sin(angle); float c = cos(angle);
+    return mat2(c, -s, s, c);
+  }
+  float grainHash(vec2 p) {
+    p = floor(p);
+    float h = 52.9829189 * fract(dot(p, vec2(0.065, 0.005)));
+    return fract(h);
+  }
+  float layeredGrain(vec2 fragPx) {
+    vec2 p = mod(fragPx + vec2(uTime * 30.0, -uTime * 21.0), 1024.0);
+    vec2 r = mat2(0.8, -0.5, 0.5, 0.8) * p;
+    float g = 0.0;
+    g += 0.40 * grainHash(r);
+    g += 0.25 * grainHash(r * 2.0 + 17.0);
+    g += 0.20 * grainHash(r * 4.0 + 47.0);
+    g += 0.10 * grainHash(r * 8.0 + 113.0);
+    g += 0.05 * grainHash(r * 16.0 + 191.0);
+    return g;
+  }
+  void main() {
+    vec2 resolution = max(uResolution, vec2(1.0));
+    vec2 uv = (2.0 * gl_FragCoord.xy - resolution) / resolution.y;
+    float time = uTime * uSpeed;
+    vec3 centerTone = max(uLineColor * 0.85567 - uGlowColor * 0.06186, vec3(0.0));
+    vec3 cloudTone = uLineColor * 0.19588 + uGlowColor * 0.2268;
+    vec2 p = uv / max(uScale, 0.05);
+    p = rotate2d(radians(uRotation) + time * uRotationSpeed) * p;
+    vec3 color = vec3(0.0);
+
+    for (int i = 0; i < MAX_LAYERS; i++) {
+      float fi = float(i) + 1.0;
+      if (fi > uLayers) break;
+      p += uWaveAmplitude * sin(p.yx * fi * uWaveFrequency + time * (uWaveSpeed + fi * uLayerSpeed));
+      float radius = length(p);
+      float ang = atan(p.y, p.x);
+      ang += sin(radius * uTwistFrequency - time * uTwistSpeed + fi) * uTwist;
+      p = vec2(cos(ang), sin(ang)) * radius;
+      float lines = abs(sin(p.x * (uLineFrequency + fi * uLineSpacing) + sin(p.y * 3.0 + time)));
+      lines = pow(max(0.0, 1.0 - lines), uLineSharpness);
+      color += uLineColor * lines / fi;
+      float glow = exp(-uGlowFalloff * abs(sin(p.x * 3.0 + time + fi)));
+      color += uGlowColor * glow * uGlowIntensity / (fi * 2.0);
+    }
+
+    float center = exp(-2.2 * dot(uv, uv));
+    color += centerTone * center;
+    float cloud = exp(-1.5 * length(uv + vec2(sin(time * 0.3) * 0.25, cos(time * 0.25) * 0.18)));
+    color += cloudTone * cloud;
+    float vig = 1.0 - smoothstep(0.35, 1.45, length(uv));
+    color *= mix(1.0 - uVignette, 1.0, vig);
+    color = 1.0 - exp(-color * uBrightness);
+    color.b *= uBlueBoost;
+
+    float noise = (layeredGrain(gl_FragCoord.xy) - 0.5) * uGrain;
+    vec3 out_ = clamp(color + noise, 0.0, 1.0);
+    fragColor = vec4(out_, 1.0);
+  }
+  `;
+
+  function compile(type, src) {
+    const sh = gl.createShader(type);
+    gl.shaderSource(sh, src);
+    gl.compileShader(sh);
+    if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
+      console.warn('GhostFibers shader error:', gl.getShaderInfoLog(sh));
+    }
+    return sh;
+  }
+  const program = gl.createProgram();
+  gl.attachShader(program, compile(gl.VERTEX_SHADER, vertexSrc));
+  gl.attachShader(program, compile(gl.FRAGMENT_SHADER, fragmentSrc));
+  gl.linkProgram(program);
+  gl.useProgram(program);
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const posLoc = gl.getAttribLocation(program, 'position');
+  gl.enableVertexAttribArray(posLoc);
+  gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+
+  function hexToRgb(hex) {
+    const v = hex.replace('#', '');
+    const r = parseInt(v.substring(0, 2), 16) / 255;
+    const g = parseInt(v.substring(2, 4), 16) / 255;
+    const b = parseInt(v.substring(4, 6), 16) / 255;
+    return [r, g, b];
+  }
+
+  // Palette matched to the reference screenshot (deep indigo fibers, blue-violet glow)
+  const settings = {
+    lineColor: hexToRgb('#140E35'),
+    glowColor: hexToRgb('#3437A0'),
+    speed: 0.2, scale: 2.0, rotation: -96, rotationSpeed: 0.25,
+    layers: 4, waveAmplitude: 0.015, waveFrequency: 3, waveSpeed: 0.15,
+    layerSpeed: 0.08, twist: 0.1, twistFrequency: 5, twistSpeed: 1.2,
+    lineFrequency: 5, lineSpacing: 2, lineSharpness: 16, glowFalloff: 10,
+    glowIntensity: 1.6, brightness: 2, blueBoost: 1.25, vignette: 0.8, grain: 0.05
+  };
+
+  const u = {};
+  Object.keys(settings).forEach(key => {
+    if (key === 'lineColor' || key === 'glowColor') return;
+    u[key] = gl.getUniformLocation(program, 'u' + key[0].toUpperCase() + key.slice(1));
+  });
+  const uRes = gl.getUniformLocation(program, 'uResolution');
+  const uTime = gl.getUniformLocation(program, 'uTime');
+  const uLineColor = gl.getUniformLocation(program, 'uLineColor');
+  const uGlowColor = gl.getUniformLocation(program, 'uGlowColor');
+
+  gl.uniform3fv(uLineColor, settings.lineColor);
+  gl.uniform3fv(uGlowColor, settings.glowColor);
+  Object.keys(settings).forEach(key => {
+    if (key === 'lineColor' || key === 'glowColor') return;
+    if (u[key]) gl.uniform1f(u[key], settings[key]);
+  });
+
+  const dpr = Math.min(Math.max(window.devicePixelRatio || 1, 0.5), 2);
+  function resize() {
+    const w = Math.max(1, Math.floor(mount.clientWidth * dpr));
+    const h = Math.max(1, Math.floor(mount.clientHeight * dpr));
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width = w; canvas.height = h;
+      gl.viewport(0, 0, w, h);
+      gl.uniform2f(uRes, w, h);
+    }
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  let raf = 0;
+  let start = performance.now();
+  let visible = true;
+  let pageVisible = !document.hidden;
+
+  function canAnimate() { return visible && pageVisible && !reducedMotion.matches; }
+
+  function frame(now) {
+    raf = 0;
+    if (!canAnimate()) return;
+    gl.uniform1f(uTime, (now - start) / 1000);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    raf = requestAnimationFrame(frame);
+  }
+  function play() { if (canAnimate() && raf === 0) raf = requestAnimationFrame(frame); }
+  function stop() { if (raf) cancelAnimationFrame(raf); raf = 0; }
+
+  document.addEventListener('visibilitychange', () => {
+    pageVisible = !document.hidden;
+    if (canAnimate()) play(); else stop();
+  });
+  reducedMotion.addEventListener('change', () => {
+    if (canAnimate()) play(); else { stop(); gl.drawArrays(gl.TRIANGLES, 0, 3); }
+  });
+  new IntersectionObserver(() => {}, {}); // no-op (background is always "visible" full-viewport)
+
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+  play();
+})();
 </script>
 </body>
 </html>
