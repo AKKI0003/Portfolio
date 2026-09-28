@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Aakarshan Sharma - AI/ML Engineer &amp; Game Developer</title>
 <meta name="description" content="Aakarshan Sharma - AI/ML Engineer, Data Analyst and Game Developer. RAG systems, local LLMs, and shipped games.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -137,6 +137,31 @@ footer span{color:var(--cyan)}
 .group-head span{margin-left:auto;font-size:11px;font-weight:400;color:var(--dim)}
 .fade-in{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s cubic-bezier(.2,.6,.2,1)}.fade-in.visible{opacity:1;transform:none}
 @media(max-width:780px){.container{padding:0 20px}section{padding-top:100px}}
+/* mobile / small-screen fixes */
+#crt,.shade{height:100vh;height:100lvh}
+#hero{min-height:100vh;min-height:100svh}
+.projects-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))}
+.skills-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))}
+.contact-terminal div{overflow-wrap:anywhere}
+@media(max-width:780px){
+  #boot{padding:28px 22px;font-size:12px}
+  #hero{padding:120px 20px 70px}
+  .hero-name{font-size:clamp(36px,12vw,64px);letter-spacing:-1px}
+  .hero-bio{font-size:15.5px;line-height:1.75;margin:24px 0 34px}
+  .hero-stats{margin-bottom:34px}
+  .hero-cta{flex-direction:column;align-items:stretch;width:100%;max-width:320px}
+  .hero-cta .btn{justify-content:center;width:100%}
+  .glow-border{width:100%}
+  .section-head{margin-bottom:36px}
+  .xp-card{padding:24px 20px}
+  .project-card,.project-card.featured{padding:22px}
+  .skill-card{padding:20px}
+  .contact-box{padding:36px 20px}
+  .contact-terminal{padding:16px;font-size:11.5px}
+  .edu-grid{gap:32px}
+  nav{top:max(12px,env(safe-area-inset-top));padding:10px 16px}
+  footer{padding:32px 20px}
+}
 </style>
 </head>
 <body>
@@ -174,7 +199,7 @@ footer span{color:var(--cyan)}
   </div>
   <div class="hero-cta">
     <div class="glow-border"><a href="#projects" class="btn btn-primary">View Projects</a></div>
-    <a href="Aakarshan_Sharma_AIML_Resume.pdf" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">Download Resume</a>
+    <a href="Aakarshan_Sharma_CV.pdf" download="Aakarshan_Sharma_CV.pdf" class="btn btn-ghost">Download Resume</a>
     <a href="#contact" class="btn btn-ghost">Contact Me</a>
   </div>
 </div>
@@ -289,12 +314,12 @@ var m=$('crt'),cv=document.createElement('canvas');m.appendChild(cv);
 var gl=cv.getContext('webgl',{alpha:false,antialias:false,powerPreference:'low-power'});if(!gl){m.remove();return}
 var O={color:'#c755f7',bg:'#05010a',speed:.5,fps:30,scale:.75};
 var VS='attribute vec2 p;varying vec2 vUv;void main(){vUv=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
-var FS='#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nvarying vec2 vUv;uniform float uTime;uniform vec3 uColor,uBackgroundColor;uniform vec2 uPointer;'+
+var FS='#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nvarying vec2 vUv;uniform float uTime;uniform vec3 uColor,uBackgroundColor;uniform vec2 uPointer;uniform float uAspect;'+
 'const float uCurvature=.25,uScanlineStrength=.25,uScanlineFrequency=200.,uWaveAmplitude=.3,uWaveFrequency=2.5,uBloom=1.5,uBloomRadius=1.,uNoise=.1,uBrightness=1.25,uRgbShift=.015,uMouseStrength=.5;'+
 'float hash21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}'+
 'vec2 crtCurve(vec2 uv,float r){vec2 p=(uv-.5)*2.;float s=max(r,1.415);float cs=s/sqrt(max(s*s-2.,.001));p=s*p/sqrt(max(s*s-dot(p,p),.001));p/=cs;return p*.5+.5;}'+
 'float plasma(vec2 uv,float t){float fs=max(uWaveFrequency/2.2,.001);uv=(uv-.5)*fs+.5;float sl=.5-.5*cos(uv.y*3.14159265*uScanlineFrequency);sl=mix(1.,sl,uScanlineStrength);uv*=vec2(80.,24.);uv=ceil(uv);uv/=vec2(80.,24.);float a=uWaveAmplitude/.28;float f=0.;f+=.7*sin(.5*uv.x+t/5.);f+=3.*sin(1.6*uv.y+t/5.);f+=sin(10.*(uv.y*sin(t/2.)+uv.x*cos(t/5.))+t/2.);float cx=uv.x+.5*sin(t/2.);float cy=uv.y+.5*cos(t/4.);f+=.4*sin(sqrt(100.*cx*cx+100.*cy*cy+1.)+t);f+=.9*sin(sqrt(75.*cx*cx+25.*cy*cy+1.)+t);f-=1.4*sin(sqrt(256.*cx*cx+25.*cy*cy+1.)+t);f+=.3*sin(.5*uv.y+uv.x+sin(t));return sl*floor(3.*(.5+.499*sin(f*a)))/3.;}'+
-'void main(){float cr=(1.1+.42/uCurvature)*exp(-uPointer.y*uMouseStrength*.4);vec2 cu=crtCurve(vUv,cr);cu.x-=uPointer.x*uMouseStrength*.035;'+
+'void main(){float cr=(1.1+.42/uCurvature)*exp(-uPointer.y*uMouseStrength*.4);vec2 cu=crtCurve(vUv,cr);cu.x-=uPointer.x*uMouseStrength*.035;float ar=uAspect/1.78;if(ar<1.)cu.x=(cu.x-.5)*ar+.5;else cu.y=(cu.y-.5)/ar+.5;'+
 'float s=plasma(cu,uTime);float r=.01*uBloomRadius;float g=s*.2;g+=plasma(cu+vec2(r,0.),uTime)*.12;g+=plasma(cu-vec2(r,0.),uTime)*.12;g+=plasma(cu+vec2(0.,r),uTime)*.12;g+=plasma(cu-vec2(0.,r),uTime)*.12;g+=plasma(cu+vec2(r),uTime)*.08;g+=plasma(cu-vec2(r),uTime)*.08;g+=plasma(cu+vec2(r,-r),uTime)*.08;g+=plasma(cu+vec2(-r,r),uTime)*.08;'+
 'vec3 ch=vec3(plasma(cu+vec2(uRgbShift,0.),uTime),s,plasma(cu-vec2(uRgbShift,0.),uTime));vec3 wc=uColor*(.3+s*.7+g*uBloom*.65);wc+=(ch-s)*.42;float wm=clamp(s*.82+g*.52,0.,1.);float gr=hash21(gl_FragCoord.xy+vec2(fract(uTime)*173.));wc=max(wc*uBrightness,vec3(0.));vec3 col=mix(uBackgroundColor,wc,wm);col+=(gr-.5)*uNoise;gl_FragColor=vec4(max(col,vec3(0.)),1.);}';
 function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))console.warn(gl.getShaderInfoLog(o));return o}
@@ -303,12 +328,12 @@ var b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_
 function U(n){return gl.getUniformLocation(pr,n)}
 function lin(h){var v=h.replace('#','');return [0,2,4].map(function(i){var c=parseInt(v.substr(i,2),16)/255;return c<=.04045?c/12.92:Math.pow((c+.055)/1.055,2.4)})}
 gl.uniform3fv(U('uColor'),lin(O.color));gl.uniform3fv(U('uBackgroundColor'),lin(O.bg));
-var uT=U('uTime'),uP=U('uPointer');
-function rs(){var w=Math.max(1,Math.floor(innerWidth*O.scale)),h=Math.max(1,Math.floor(innerHeight*O.scale));if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;gl.viewport(0,0,w,h)}}
+var uT=U('uTime'),uP=U('uPointer'),uA=U('uAspect');
+function rs(){var w=Math.max(1,Math.floor(m.clientWidth*O.scale)),h=Math.max(1,Math.floor(m.clientHeight*O.scale));if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;gl.viewport(0,0,w,h)}}
 addEventListener('resize',rs);rs();
 var tx=0,ty=0,cx=0,cy=0,last=0,prev=performance.now(),T=0,rm=matchMedia('(prefers-reduced-motion:reduce)');
 addEventListener('pointermove',function(e){tx=e.clientX/innerWidth*2-1;ty=-(e.clientY/innerHeight*2-1)},{passive:true});
-function draw(){gl.uniform1f(uT,T);gl.uniform2f(uP,cx,cy);gl.drawArrays(gl.TRIANGLES,0,3)}
+function draw(){gl.uniform1f(uA,cv.width/cv.height);gl.uniform1f(uT,T);gl.uniform2f(uP,cx,cy);gl.drawArrays(gl.TRIANGLES,0,3)}
 function f(now){requestAnimationFrame(f);if(document.hidden||rm.matches)return;var iv=1000/O.fps;if(now-last<iv)return;last=now-((now-last)%iv);var d=Math.min((now-prev)/1000,.1);prev=now;T+=d*O.speed;cx+=(tx-cx)*.08;cy+=(ty-cy)*.08;draw()}
 draw();requestAnimationFrame(f);
 })();
